@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('SCM-Checkout'){
             steps{
-          echo ""
+        git 'https://github.com/rshruti/mvn_sonar.git'
             }
         }
          stage('Build'){
