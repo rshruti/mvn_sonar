@@ -1,26 +1,33 @@
+
 pipeline{
     agent any
     stages{
         stage('SCM-Checkout'){
             steps{
-        git 'https://github.com/rshruti/mvn_sonar.git'
+            git 'https://github.com/rshruti/mvn_sonar.git'
             }
         }
-         stage('Build'){
-            steps{
-                echo "Build successful"               
-            }
+         	stage('Build Analysis') {
+		steps {
+			withSonarQubeEnv('sonar') {
+				sh '/opt/maven/bin/mvn clean verify sonar:sonar -Dmaven.test.skip=true'
+			}
+		}
+	}
+	stage("Quality Gate") {
+            steps {
+              timeout(time: 2, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+              }
+
         }  
-        stage('junit test'){
-            steps{
-          echo "junit test is successful"
-            }
-        }
-        stage('Deploy'){
-            steps{
-          echo "Deployment is successful"
-            }
-        }
-        
-            }
-        }
+}
+
+	stage ('Deploy') {
+		steps {
+			sh '/opt/maven/bin/mvn clean install -Dmaven.test.skip=true'
+		}
+	}
+
+}}
+
