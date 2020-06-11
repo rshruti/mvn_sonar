@@ -25,7 +25,7 @@
   <distributionManagement>
           <snapshotRepository>
              <id>artifactory</id>
-             <url>>http://34.204.81.220:8082/artifactory/shruti/</url>
+             <url>>http://34.204.81.220:8082/artifactory/libs-snapshot-local/</url>
           </snapshotRepository>
         </distributionManagement>
 </project>
